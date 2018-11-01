@@ -1,0 +1,29 @@
+{
+  "name": "appconfig",
+  "version": "1.0.0",
+  "description": "识别app平台，且注册且bridge方法的工具",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinglei5959/appconfig.git"
+  },
+  "keywords": [
+    "app",
+    "configure",
+    "jsbridge",
+    "platform"
+  ],
+  "author": "dinglei @niuyoude",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dinglei5959/appconfig/issues"
+  },
+  "homepage": "https://github.com/dinglei5959/appconfig#readme",
+  "devDependencies": {
+    "rollup-plugin-typescript2": "^0.17.2"
+  }
+}
