@@ -1,9 +1,11 @@
 
 import Config from './lib/config';
+import event from './lib/eventold';
 import { mobile as PhoneTypeList , Terminal } from './lib/platform-type';
 import { isTablet , loadScript , docReady } from './lib/utils';
 
-
+const LISTEN = 'WAITFORBRIDGE'; // 等待 jsbridge加载的信息。。
+const MESSAGE = 'platform got ready!';
 
 export default  class Platform {
   private matchlist:Array<string>; // 计算的平台列表
@@ -111,6 +113,22 @@ export default  class Platform {
       }
       this.debug &&  reject(new Error('缺少加载方式。。'));
     });
+  }
+
+  /**
+   * 触发ready
+   * @param {*} message
+   */
+  triggerReady(message) {
+    if(this.debug){
+      console.log(MESSAGE);
+      console.log(message);
+    }
+    event.trigger(LISTEN);
+  }
+
+  triggerFail(error) {
+    this.debug && console.error(error);
   }
 
 
