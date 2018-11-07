@@ -41,7 +41,7 @@ export function loadScript(url:string) {
    * @return {Promise} - 返回promise，completed后自动解绑
    * */
 export function  docReady (callback:Function) {
-  let promise = null; // Promise;
+  let promise:any = null; // Promise;
 
   if (!callback) {
     // a callback wasn't provided, so let's return a promise instead

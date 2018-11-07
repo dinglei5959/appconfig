@@ -2,7 +2,7 @@
   "name": "appconfig",
   "version": "1.0.0",
   "description": "识别app平台，且注册且bridge方法的工具",
-  "main": "index.js",
+  "main": "dist/platform.umd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "rollup -c"
@@ -25,5 +25,10 @@
   "homepage": "https://github.com/dinglei5959/appconfig#readme",
   "devDependencies": {
     "rollup-plugin-typescript2": "^0.17.2"
+  },
+  "dependencies": {
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "typescript": "^3.1.6"
   }
 }

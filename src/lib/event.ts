@@ -11,7 +11,7 @@ class NameSpace {
 
   listen(key:string,callback,last?:boolean):void{
 
-    if( !this.eventCahce[key] ){ // 判断是否存在 不存在则创建新的 订阅者缓存池
+    if( !this.eventCahce[<any>key] ){ // 判断是否存在 不存在则创建新的 订阅者缓存池
       this.eventCahce[key] = [];
     }
 

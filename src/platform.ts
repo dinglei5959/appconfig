@@ -8,22 +8,22 @@ const LISTEN = 'WAITFORBRIDGE'; // 等待 jsbridge加载的信息。。
 const MESSAGE = 'platform got ready!';
 
 export default  class Platform {
-  private matchlist:Array<string>; // 计算的平台列表
+  private matchlist:Array<string> = []; // 计算的平台列表
   private debug:boolean; // 是否设置为 调试模式  打印具体信息
   private isPortrait:boolean | null = null; // 是否为竖屏的判断
-  private win:Window; // 当前 frame的window对象
-  private width:number; // 宽度
-  private height:number; // 高度
+  private win:Window|null; // 当前 frame的window对象
+  private width:number|null = null; // 宽度
+  private height:null|number = null; // 高度
   private configs:Array<Config>; // 配置项
   private userAgent:string; //
 
-  constructor(props){
+  constructor(props:any){
     const { configs , debug  } = props;
 
     this.configs = configs;
     this.debug = debug;
     this.win = document.defaultView;
-    this.userAgent = this.win.navigator.userAgent;
+    this.userAgent = this.win ? this.win.navigator.userAgent : '';
     this._calcDim();
 
   }
@@ -70,9 +70,9 @@ export default  class Platform {
    * 识别具体 app 平台
    */
   recogPlatform() {
-    Object.keys(this.configs).forEach((key) => {
+    Object.keys(this.configs).forEach((key:string) => {
       // 配置处理
-      const config = this.configs[key];
+      const config:Config = this.configs[<any>key];
       let reg:string|RegExp = config.pltReg || key;
       if (!(reg instanceof RegExp)) {
         reg = new RegExp(reg);
@@ -88,7 +88,7 @@ export default  class Platform {
    */
   ready() {
     const key:string = this.matchlist[this.matchlist.length - 1];
-    const config = this.configs[key] || null;
+    const config = this.configs[<any>key] || null;
     return new Promise((resolve, reject) => {
 
       if (!config) { // 不存在配置项直接报错
@@ -99,11 +99,11 @@ export default  class Platform {
         // 第二种方式
         loadScript(config.jsSDKUrl).then(() => {
           docReady(() => {
-            if (config._listener) {
+            if (config.loadWay) {
               event.listen(LISTEN, () => {
                 resolve(key);
               });
-              config._listener(this);
+              config.loadWay(this);
             } else {
               resolve(key);
             }
@@ -119,7 +119,7 @@ export default  class Platform {
    * 触发ready
    * @param {*} message
    */
-  triggerReady(message) {
+  triggerReady(message:string) {
     if(this.debug){
       console.log(MESSAGE);
       console.log(message);
@@ -127,7 +127,7 @@ export default  class Platform {
     event.trigger(LISTEN);
   }
 
-  triggerFail(error) {
+  triggerFail(error:string) {
     this.debug && console.error(error);
   }
 
@@ -158,18 +158,20 @@ export default  class Platform {
   private _calcDim():void {
     if (  
       this.isPortrait === null ||
-      (this.isPortrait === false && this.win['innerWidth'] < this.win['innerHeight'])
+      (this.isPortrait === false && this.win && this.win['innerWidth'] < this.win['innerHeight'])
     ) { // 防止计算过的重复计算
-      const win:Window = this.win;
-      this.width = win.screen.width;
-      this.height = win.screen.height;
-      if (this.width > 0 && this.height > 0) {
-        /* istanbul ignore next  */
-        if (this.width < this.height) {
-          this.isPortrait = true;
-        } else {
-          // the device is in landscape
-          this.isPortrait = false;
+      const win = this.win;
+      if(win){
+        this.width = win.screen.width;
+        this.height = win.screen.height;
+        if (this.width > 0 && this.height > 0) {
+          /* istanbul ignore next  */
+          if (this.width < this.height) {
+            this.isPortrait = true;
+          } else {
+            // the device is in landscape
+            this.isPortrait = false;
+          }
         }
       }
     }

@@ -12,11 +12,11 @@ const _slice = Array.prototype.slice;
 const _shift = Array.prototype.shift;
 const _unshift = Array.prototype.unshift;
 
-function each(ary, fn) {
+function each(stack:Array<any>, fn:Function) {
   var ret;
-  for (var i = 0, l = ary.length; i < l; i++) {
-    var n = ary[i];
-    ret = fn.call(n, i, n);
+  for (var i = 0, l = stack.length; i < l; i++) {
+    var stackFun = stack[i];
+    ret = fn.call(stackFun, i, stackFun);
   }
   return ret;
 };
@@ -25,14 +25,15 @@ function each(ary, fn) {
  * 监听 存放订阅者的信息
  * @param key -- 
  * @param cb -- 处理函数
- * @param namecacheKey -- 命名空间 的访问key
+ * @param cache -- 命名空间 的访问key
  */
-export function _listen(key:string, cb, namecacheKey:object) {
-  if (!namecacheKey[key]) {
-    namecacheKey[key] = [];
+export function _listen(key:string, cb:Function, cache:object = {}) {
+  if ( !(key in cache)  ) {
+    cache[key] = [];
   }
-  namecacheKey[key].push(cb);
+  cache[key].push(cb);
 }
+
 
 /**
  * 触发事件
@@ -41,13 +42,14 @@ export function _trigger () {
   const cache = Array.prototype.shift.call(arguments);
   const key = Array.prototype.unshift.call(arguments);
   const  args = arguments;
-  const  scope = this;
-  let stack:Array<any> = cache[key];
+  const  scope:any = this;
+  let stack:Array<Function> = cache[key]; // 缓存订阅的方法库
   if (!stack || !stack.length) {
     return;
   }
-  return each(stack, function() {
-    this.apply(scope, args);
+  return each(stack, function () {
+    //这里涉及到一个高级用法   希望  stack 里面的函数每个 都能使用
+    this.apply(scope, args);  // this 指向的是 stack里面的函数 所以能直接执行
   });
 };
 
@@ -67,10 +69,10 @@ export function _remove(key, cache, fn?) {
   }
 };
 
-export function _create (namespace) {
+export function _create (namespace?:string) {
     namespace = namespace || DEFUALTNAMESPACE;
     let cache = {};
-    let offlineStack = []; // 离线事件
+    let offlineStack:Array<any> | null = []; // 离线事件
     let ret = {
       listen: function(key, fn, last) {
         _listen(key, fn, cache);

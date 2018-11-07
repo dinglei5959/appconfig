@@ -9,7 +9,7 @@ const pkg = require("./package.json");
 export default {
   input:"src/platform.ts",
   output:{
-    file:"platform.umd.js",
+    file:pkg.main,
     format:"umd",
     name:"platForm",
   },
