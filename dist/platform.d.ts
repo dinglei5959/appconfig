@@ -35,6 +35,12 @@ export default class Platform {
      */
     isMatch(regList: string | string[]): boolean;
     /**
+     * 监听jsbridge的状态
+     * @param {String} jsBridgeName -- 名称
+     * @param {String} jsBridgeListerName -- 事件
+     */
+    listenJsBridgeLoad(jsBridgeName: any, jsBridgeListerName: any, global: any): void;
+    /**
      * 计算
      */
     private _calcDim;

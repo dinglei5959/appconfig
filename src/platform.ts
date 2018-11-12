@@ -151,6 +151,31 @@ export default  class Platform {
     return res;
   }
 
+  /**
+   * 监听jsbridge的状态
+   * @param {String} jsBridgeName -- 名称
+   * @param {String} jsBridgeListerName -- 事件
+   */
+  listenJsBridgeLoad(jsBridgeName, jsBridgeListerName,global:any) {
+    const PLATFORM_INIT_TIMEOUT = 10000;
+    if (global[jsBridgeName]) {
+      this.triggerReady(jsBridgeName + ' Init Success!');
+      'timer' in global && global.clearTimeout(global.timer);
+    } else {
+      document.addEventListener(
+        jsBridgeListerName,
+        () => {
+          this.triggerReady(jsBridgeName + ' Init Success!');
+          global.timer && global.clearTimeout(global.timer);
+        },
+        false
+      );
+    }
+    global.timer = global.setTimeout(() => {
+      this.triggerFail(jsBridgeListerName + ' Init Timeout!');
+    }, PLATFORM_INIT_TIMEOUT);
+  } 
+
 
   /**
    * 计算

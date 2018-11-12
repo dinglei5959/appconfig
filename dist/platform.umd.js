@@ -334,6 +334,28 @@
           return res;
       };
       /**
+       * 监听jsbridge的状态
+       * @param {String} jsBridgeName -- 名称
+       * @param {String} jsBridgeListerName -- 事件
+       */
+      Platform.prototype.listenJsBridgeLoad = function (jsBridgeName, jsBridgeListerName, global) {
+          var _this = this;
+          var PLATFORM_INIT_TIMEOUT = 10000;
+          if (global[jsBridgeName]) {
+              this.triggerReady(jsBridgeName + ' Init Success!');
+              'timer' in global && global.clearTimeout(global.timer);
+          }
+          else {
+              document.addEventListener(jsBridgeListerName, function () {
+                  _this.triggerReady(jsBridgeName + ' Init Success!');
+                  global.timer && global.clearTimeout(global.timer);
+              }, false);
+          }
+          global.timer = global.setTimeout(function () {
+              _this.triggerFail(jsBridgeListerName + ' Init Timeout!');
+          }, PLATFORM_INIT_TIMEOUT);
+      };
+      /**
        * 计算
        */
       Platform.prototype._calcDim = function () {

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <script type="text/javascript" src="../dist/platform.umd.js"></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/vconsole@3.1.0/dist/vconsole.min.js"
+    ></script>
+    <script>
+      // init vConsole
+      var vConsole = new VConsole();
+      console.log("Hello world");
+    </script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      (function() {
+        const PLATFORM_INIT_TIMEOUT = 10000;
+
+        var config = {
+          wechat: {
+            type: 3,
+            pltReg: /wechat|micromessenger/i,
+            jsSDKUrl: "//res.wx.qq.com/open/js/jweixin-1.2.0.js",
+            loadWay: function(plt) {
+              plt.listenJsBridgeLoad("WeixinJSBridge", "WeixinJSBridgeReady",window);
+            }
+          },
+          alipay: {
+            type: 3,
+            pltReg: "Alipay",
+            jsSDKUrl:
+              "//a.alipayobjects.com/g/h5-lib/alipayjsapi/3.0.2/alipayjsapi.min.js",
+            loadWay: function(plt) {
+              plt.triggerReady("alipay Init Success!");
+            }
+          }
+        };
+        
+
+        window.pltform = new window.platForm({configs:config,debug:true});
+        pltform.startRecognition().then(function(readySource){
+          window.alert(readySource);
+        })
+
+      })();
+    </script>
+  </body>
+</html>
