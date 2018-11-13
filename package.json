@@ -1,6 +1,6 @@
 {
   "name": "appconfig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "识别app平台，且注册且bridge方法的工具",
   "main": "dist/platform.umd.js",
   "scripts": {
