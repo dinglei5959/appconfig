@@ -1,6 +1,6 @@
 {
-  "name": "appconfig",
-  "version": "1.0.1",
+  "name": "appconfig2",
+  "version": "1.1.0",
   "description": "识别app平台，且注册且bridge方法的工具",
   "main": "dist/platform.umd.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "dist",
     "src"
   ],
-  "author": "dinglei @niuyoude",
+  "author": "dinglei5959",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dinglei5959/appconfig/issues"
