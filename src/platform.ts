@@ -4,6 +4,7 @@ import event from './lib/eventold';
 import { mobile as PhoneTypeList , Terminal } from './lib/platform-type';
 import { isTablet , loadScript , docReady } from './lib/utils';
 
+
 const LISTEN = 'WAITFORBRIDGE'; // 等待 jsbridge加载的信息。。
 const MESSAGE = 'platform got ready!';
 
