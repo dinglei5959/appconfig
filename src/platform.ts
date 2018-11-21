@@ -1,12 +1,13 @@
 
 import Config from './lib/config';
-import event from './lib/eventold';
+import EventCenter from './lib/event';
 import { mobile as PhoneTypeList , Terminal } from './lib/platform-type';
 import { isTablet , loadScript , docReady } from './lib/utils';
 
 
 const LISTEN = 'WAITFORBRIDGE'; // 等待 jsbridge加载的信息。。
 const MESSAGE = 'platform got ready!';
+const event = new EventCenter();
 
 export default  class Platform {
   private matchlist:Array<string> = []; // 计算的平台列表
